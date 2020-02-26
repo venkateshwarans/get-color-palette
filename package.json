@@ -1,0 +1,16 @@
+{
+  "name": "get-color-palette",
+  "version": "1.0.0",
+  "description": "Get color palette from image ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Venkateshwaran Selvaraj",
+  "license": "ISC",
+  "dependencies": {
+    "junk": "^3.1.0",
+    "node-vibrant": "^3.1.5",
+    "rxjs": "^6.5.4"
+  }
+}
