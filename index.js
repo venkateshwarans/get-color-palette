@@ -7,21 +7,24 @@ const _ = require('lodash');
 
 
 fs.readdir(dir, (err, files) => {
-  console.log(files.filter(junk.not))
   createVibrantCall(files.filter(junk.not))
 });
 
 function createVibrantCall(files) {
-  const reqArr  =[]
-  _.forEach(files, (file) => {
-    reqArr.push(Vibrant.from(`${dir}/${file}`).getPalette())
+  const sorted = files.sort(function(a, b) {
+    return fs.statSync(`${dir}/${a}`).mtime.getTime() -
+           fs.statSync(`${dir}/${b}`).mtime.getTime();
+  });
+  const reqArr  = _.map(sorted, (file) => {
+    return Vibrant.from(`${dir}/${file}`).getPalette();
   })
-  console.log(reqArr)
   generatePalettes(reqArr);
 }
 
 function generatePalettes(reqArr) {
   forkJoin(reqArr).subscribe((response) => {
-    console.log(response)
+    fs.writeFileSync(`./palette.json`, JSON.stringify(response))
+  }, error => {
+    console.log(error)
   });
 }
