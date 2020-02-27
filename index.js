@@ -18,12 +18,17 @@ function createVibrantCall(files) {
   const reqArr  = _.map(sorted, (file) => {
     return Vibrant.from(`${dir}/${file}`).getPalette();
   })
-  generatePalettes(reqArr);
+  console.log(reqArr)
+  generatePalettes(reqArr, sorted);
 }
 
-function generatePalettes(reqArr) {
+function generatePalettes(reqArr, sorted) {
   forkJoin(reqArr).subscribe((response) => {
-    fs.writeFileSync(`./palette.json`, JSON.stringify(response))
+
+    const mappedToImage  = _.map(response, (swatch, i) => {
+      return {file: sorted[i], swatch}
+    })
+    fs.writeFileSync(`./palette.json`, JSON.stringify(mappedToImage))
   }, error => {
     console.log(error)
   });
